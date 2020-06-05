@@ -1,0 +1,1 @@
+print("Interactive Graph Cut for Comuter Vision \nBased on Jolly and and Boykov Paper")
