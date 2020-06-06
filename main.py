@@ -1,6 +1,9 @@
-from src.mask import App
+from src.mask import Mask
 
-print("Interactive Graph Cut for Comuter Vision \nBased on Jolly and and Boykov Paper")
+print("Interactive Graph Cut for Computer Vision \nBased on Jolly and and Boykov Paper \n"
+      "--------------------------------------------------------------------------------")
 
-app = App()
-app.showImage()
+filename = 'src/img_test/mouette.png'
+
+mask = Mask().makeMask(filename)
+print(mask)
