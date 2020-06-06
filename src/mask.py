@@ -65,5 +65,5 @@ class Mask():
                 self.img = self.imgCopy.copy()
                 self.mask = np.zeros(self.img.shape[:2], dtype = np.uint8) #reinitialize the mask to undefined
             elif pressedKey == ord('m'):
-                return self.mask
-                print('test')
+                print('Mask editing finished')
+                return self.mask  #, self.imgCopy
