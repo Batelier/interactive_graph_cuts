@@ -25,7 +25,14 @@ def Ford_Fulkerson(graph, source, sink):
         #substract the weight of the smallest pathFlow to the other weight of the path
         v = sink
         while v != source:
-            u = parentNode
+            u = parentNode[v]
+            residualGraph[u][v] -= pathFlow #substract the smallest pathFlow weight
+            residualGraph[v][u] += pathFlow #add the weight in the opposte direction [reste légèrement flou]
+            v = parentNode[v]
+
+        maxFlow += pathFlow
+
+        #Is the residualGraph the graph we want for mincut ?
 
 
 
