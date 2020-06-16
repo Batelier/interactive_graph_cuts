@@ -55,7 +55,9 @@ class GMM:
         for clusterIndex in range(self.clustersNumber):
             self.gammas[:, clusterIndex] = self.weights[clusterIndex] * mvn.pdf(X, self.means[clusterIndex, :], self.varianceCovariance[clusterIndex], allow_singular=True)
         
-        self.gammas = self.gammas / (np.sum(self.gammas, axis=1)[:,np.newaxis] + + pow(10,-320))
+        self.gammas[self.gammas == 0] = np.finfo(np.float).eps
+
+        self.gammas = self.gammas / (np.sum(self.gammas, axis=1)[:,np.newaxis])
     
     def __maximisation(self, X):
         observationsNumber = len(X)
