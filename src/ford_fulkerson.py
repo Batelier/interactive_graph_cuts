@@ -41,7 +41,7 @@ def printMincut(residualGraph, source, sink):
             if residualGraph[i][j] == 0 and realGraph[i][j] > 0: #
                 print(str(i) + " - " + str(j))
 
-    #print(residualGraph)
+    print(residualGraph)
 
 #what's next :
 #get the cut graph
