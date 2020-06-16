@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 
 class Mask():
+
     black = [0,0,0]         #color for background pixels
     white = [255,255,255]   #color for foreground pixels
     blue = [0, 0, 255]      #color for undefined pixels
@@ -36,11 +37,13 @@ class Mask():
                 cv.circle(self.mask, (x, y), self.drawingThickness, self.drawingValue['value'], -1)
 
     def makeMask(self, filename):
+        windowName = 'drawing'
+
         print('WELCOME TO MASK CREATING')
         self.img = cv.imread(filename)
         self.imgCopy = self.img.copy() #save the input image in order to make reset possible
         self.mask = np.zeros(self.img.shape[:2], dtype = np.uint8) #initialize values to 0 = undefined
-        cv.namedWindow('drawing')
+        cv.namedWindow(windowName)
         cv.setMouseCallback('drawing', self.mouseClicked) #enable use of mouse
 
         print('Foreground by default \n'
