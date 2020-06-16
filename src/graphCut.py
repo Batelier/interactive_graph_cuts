@@ -1,7 +1,9 @@
 from .graph import Graph
 from .gmm import GMM
+from .ford_fulkerson import mincut
 from math import sqrt, exp, log
 import numpy as np
+import maxflow
 import sys
 
 
@@ -13,6 +15,7 @@ class GraphCut(Graph):
         self.lamb = 9
         self.setImage(image)
         self.setMask(mask)
+        self.applyMincut()
 
     def setImage(self, image):
         self.image = image
@@ -82,8 +85,8 @@ class GraphCut(Graph):
                     self.addEdge(self.image.shape[1]*y + x, self.backgroundNodeIndex, 0, 0)
                     self.addEdge(self.image.shape[1]*y + x, self.foregroundNodeIndex, self.K, self.K)
                 else: # others
-                    backgroundWeight = -log(self.gmms['background'].probability(np.array([self.image[y, x]]))[0])
-                    foregroundWeight = -log(self.gmms['foreground'].probability(np.array([self.image[y, x]]))[0])
+                    backgroundWeight = -log(self.gmms['background'].probability(np.array([self.image[y, x]]))[0] + sys.float_info.epsilon) # TODO: Better handling
+                    foregroundWeight = -log(self.gmms['foreground'].probability(np.array([self.image[y, x]]))[0] + sys.float_info.epsilon)
 
                     self.addEdge(self.image.shape[1]*y + x, self.backgroundNodeIndex, backgroundWeight, backgroundWeight)
                     self.addEdge(self.image.shape[1]*y + x, self.foregroundNodeIndex, foregroundWeight, foregroundWeight)
@@ -113,3 +116,20 @@ class GraphCut(Graph):
             beta = 1. / (2 * beta/(4*self.image.shape[1]*self.image.shape[0] - 3*self.image.shape[0] - 3*self.image.shape[1] + 2))
         
         self.beta = beta
+
+    def applyMincut(self):
+        matrix = self.toMatrix()
+
+        resultMatix = mincut(matrix, self.foregroundNodeIndex, self.backgroundNodeIndex)
+        
+        finalForegroundListMask = np.array(resultMatix[self.foregroundNodeIndex]) != 0
+        finalBackgroundListMask = np.array(resultMatix[self.backgroundNodeIndex]) != 0
+
+        finalForegroundMask = np.zeros(self.image.shape[:2])
+        finalBackgroundMask = np.zeros(self.image.shape[:2])
+        for y in range(self.image.shape[0]):
+            finalForegroundMask[y, :] = finalForegroundListMask[y*self.image.shape[1], (y+1)*self.image.shape[1]-1]
+            finalBackgroundMask[y, :] = finalBackgroundListMask[y*self.image.shape[1], (y+1)*self.image.shape[1]-1]
+        
+        self.foregroundImage = self.image[finalForegroundMask]
+        self.backgroundImage = self.image[finalBackgroundListMask]

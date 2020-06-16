@@ -13,4 +13,7 @@ image = cv.imread(filename)
 
 graph = GraphCut(image, mask)
 
-print(mask)
+cv.imshow('Result: foreground', graph.foregroundImage)
+cv.imshow('Result: background', graph.backgroundImage)
+
+cv.waitKey(0)

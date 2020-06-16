@@ -1,3 +1,5 @@
+import numpy as np
+
 class Edge:
     def __init__(self, origin, destination, weight, next):
         self.origin = origin
@@ -32,3 +34,11 @@ class Graph:
 
         self.edges.append(Edge(destination, origin, revWeight, self.nodes[destination].first))
         self.nodes[destination].first = len(self.edges)-1
+
+    def toMatrix(self):
+        matrix = np.zeros((len(self.nodes), len(self.nodes)))
+
+        for edge in self.edges:
+            matrix[edge.origin, edge.destination] = edge.weight
+
+        return matrix

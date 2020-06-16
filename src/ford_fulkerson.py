@@ -3,7 +3,7 @@ from src.bfs import bfs
 parentNode = []
 INF = 99999999
 
-def printMincut(residualGraph, source, sink):
+def mincut(residualGraph, source, sink):
     # we will use the residual graph to determine the min cut
     realGraph = [i[:] for i in residualGraph]
     rows = len(residualGraph)
@@ -36,10 +36,12 @@ def printMincut(residualGraph, source, sink):
 
         maxFlow += pathFlow
 
-    for i in range(rows):
-        for j in range(columns):
-            if residualGraph[i][j] == 0 and realGraph[i][j] > 0: #
-                print(str(i) + " - " + str(j))
+    #for i in range(rows):
+    #    for j in range(columns):
+    #        if residualGraph[i][j] == 0 and realGraph[i][j] > 0: #
+    #            print(str(i) + " - " + str(j))
+
+    return residualGraph
 
     #print(residualGraph)
 
