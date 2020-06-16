@@ -1,4 +1,4 @@
-
+# https://www.youtube.com/watch?v=GoVjOT30xwo&t=1s
 #shall return a boolean
 def bfs(residualGraph, source, sink, parentNode):
     """Search the shallowest nodes in the search tree first."""
@@ -7,7 +7,7 @@ def bfs(residualGraph, source, sink, parentNode):
     # To check the nodes we've already explored
     explored = []
     # adding the start_state in the fringe
-    queue.push() #add startState                    !!!!!!!!
+    queue.push() #add startState                    !!!!!!!! 
     # current_node, action = fringe.pop()
     # print(problem.getSuccessors(current_node))
 
