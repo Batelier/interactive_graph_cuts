@@ -34,5 +34,5 @@ def Ford_Fulkerson(graph, source, sink):
 
         #Is the residualGraph the graph we want for mincut ?
 
-
+    return maxFlow, residualGraph
 
