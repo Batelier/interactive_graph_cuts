@@ -13,13 +13,16 @@ class GraphCut(Graph):
         self.lamb = 9
         self.setImage(image)
         self.setMask(mask)
-        self.calcNWeights()
-        self.calcK()
-        self.calcTWeights()
 
     def setImage(self, image):
         self.image = image
+        self.nodes = []
+        self.edges = []
+        for i in range(self.image.shape[0]*self.image.shape[1]):
+            self.addNode()
         self.__calcBeta()
+        self.calcNWeights()
+        self.calcK()
 
     def setMask(self, mask):
         self.mask = mask
@@ -34,11 +37,13 @@ class GraphCut(Graph):
             'background': GMM(5, 30).fit(backgroundX),
             'foreground': GMM(5, 30).fit(foregroundX)
         }
+
+        self.calcTWeights()
     
     def calcNWeights(self):
         for y in range(self.image.shape[0]):
             for x in range(self.image.shape[1]):
-                nodeIndex = self.addNode()
+                nodeIndex = self.image.shape[1]*y + x
                 # Only need to treat upper pixels and left pixel since we go to the others after
                 if x > 0: # left
                     diff = self.image[y, x] - self.image[y, x-1]
@@ -66,8 +71,7 @@ class GraphCut(Graph):
         self.K = 1 + np.max(weights)
     
     def calcTWeights(self):
-        self.foregroundNodeIndex = self.addNode()
-        self.backgroundNodeIndex = self.addNode()
+        self.foregroundNodeIndex, self.backgroundNodeIndex = self.addTerminalNodes()
 
         for y in range(self.image.shape[0]):
             for x in range(self.image.shape[1]):

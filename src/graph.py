@@ -20,6 +20,12 @@ class Graph:
 
         return len(self.nodes) - 1
 
+    def addTerminalNodes(self):
+        self.foregroundNodeIndex = self.addNode()
+        self.backgroundNodeIndex = self.addNode()
+
+        return [self.foregroundNodeIndex, self.backgroundNodeIndex]
+
     def addEdge(self, origin, destination, weight, revWeight):
         self.edges.append(Edge(origin, destination, weight, self.nodes[origin].first))
         self.nodes[origin].first = len(self.edges)-1
