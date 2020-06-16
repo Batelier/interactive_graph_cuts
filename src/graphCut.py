@@ -124,11 +124,14 @@ class GraphCut(Graph):
         finalForegroundListMask = np.array(resultMatix[self.foregroundNodeIndex]) != 0
         finalBackgroundListMask = np.array(resultMatix[self.backgroundNodeIndex]) != 0
 
-        finalForegroundMask = np.zeros(self.image.shape[:2])
-        finalBackgroundMask = np.zeros(self.image.shape[:2])
+        finalForegroundMask = np.zeros(self.image.shape[:2], dtype=bool)
+        finalBackgroundMask = np.zeros(self.image.shape[:2], dtype=bool)
         for y in range(self.image.shape[0]):
-            finalForegroundMask[y, :] = finalForegroundListMask[y*self.image.shape[1], (y+1)*self.image.shape[1]-1]
-            finalBackgroundMask[y, :] = finalBackgroundListMask[y*self.image.shape[1], (y+1)*self.image.shape[1]-1]
+            finalForegroundMask[y, :] = finalForegroundListMask[y*self.image.shape[1]:(y+1)*self.image.shape[1]]
+            finalBackgroundMask[y, :] = finalBackgroundListMask[y*self.image.shape[1]:(y+1)*self.image.shape[1]]
         
-        self.foregroundImage = self.image[finalForegroundMask]
-        self.backgroundImage = self.image[finalBackgroundListMask]
+        
+        self.foregroundImage = np.copy(self.image)
+        self.foregroundImage[finalForegroundMask == False] = 0
+        self.backgroundImage = np.copy(self.image)
+        self.backgroundImage[finalForegroundMask == False] = 0
