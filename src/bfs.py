@@ -1,5 +1,6 @@
-# https://www.youtube.com/watch?v=GoVjOT30xwo&t=1s
-#shall return a boolean
+
+#return True if sink visited, False if not
+#if sink is not visited, then the residual Graph is finished
 def bfs(residualGraph, source, sink, parentNode):
     #Same implementation than DFS but using a Queue
     queue = []
