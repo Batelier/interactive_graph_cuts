@@ -3,7 +3,6 @@ from .gmm import GMM
 from .ford_fulkerson import mincut
 from math import sqrt, exp, log
 import numpy as np
-import maxflow
 import sys
 
 
