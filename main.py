@@ -5,7 +5,7 @@ import cv2 as cv
 print("Interactive Graph Cut for Computer Vision \nBased on Jolly and and Boykov Paper \n"
       "--------------------------------------------------------------------------------")
 
-filename = 'src/img_test/bunny.jpg'
+filename = 'src/img_test/bigbunny.png'
 
 mask = Mask().makeMask(filename)
 
