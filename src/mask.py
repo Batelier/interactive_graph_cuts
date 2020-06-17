@@ -71,4 +71,5 @@ class Mask():
                 self.mask = np.zeros(self.img.shape[:2], dtype = np.uint8) #reinitialize the mask to undefined
             elif pressedKey == ord('m'):
                 print('Mask editing finished')
+                cv.destroyWindow(self.windowName)
                 return self.mask  #, self.imgCopy
