@@ -116,8 +116,6 @@ class GraphCut(Graph):
             self.beta = 1. / (2 * beta/(4*self.image.shape[1]*self.image.shape[0] - 3*self.image.shape[0] - 3*self.image.shape[1] + 2))
 
     def applyPyMaxflow(self):
-        matrix = self.toMatrix()
-
         g = maxflow.GraphFloat()
 
         nodes = g.add_nodes(len(self.nodes)-2)
