@@ -122,17 +122,31 @@ class GraphCut(Graph):
 
         nodes = g.add_nodes(len(self.nodes)-2)
 
-        for i in range(matrix.shape[0]):
-            for j in range(i+1, matrix.shape[1]):
-                if i == self.foregroundNodeIndex or i == self.backgroundNodeIndex or j == self.foregroundNodeIndex or j == self.backgroundNodeIndex:
-                    continue
-                g.add_edge(nodes[i], nodes[j], matrix[i, j], matrix[j, i])
+        visistedPairOfNodes = []
 
-        for j in range(matrix.shape[1]):
-            if j == self.foregroundNodeIndex or j == self.backgroundNodeIndex:
+        tedges = [[] for i in range(len(self.nodes)-2)]
+
+        for edge in self.edges:
+            if edge.origin == self.foregroundNodeIndex or edge.origin == self.backgroundNodeIndex or edge.destination == self.foregroundNodeIndex or edge.destination == self.backgroundNodeIndex:
+                if edge.origin == self.foregroundNodeIndex or edge.origin == self.backgroundNodeIndex:
+                    tedges[edge.destination].append(edge)
                 continue
 
-            g.add_tedge(nodes[j], matrix[self.backgroundNodeIndex, j], matrix[self.foregroundNodeIndex, j])
+            if not ((edge.origin, edge.destination) in visistedPairOfNodes) and not ((edge.destination, edge.origin) in visistedPairOfNodes):
+                visistedPairOfNodes.append((edge.origin, edge.destination))
+                g.add_edge(edge.origin, edge.destination, edge.weight, edge.weight)
+        
+        for edges in tedges:
+            foregroundEdge = None
+            backgroundEdge = None
+            if edges[0].origin == self.foregroundNodeIndex:
+                foregroundEdge = edges[0]
+                backgroundEdge = edges[1]
+            else:
+                foregroundEdge = edges[1]
+                backgroundEdge = edges[0]
+            
+            g.add_tedge(foregroundEdge.destination, backgroundEdge.weight, foregroundEdge.weight)
 
         flow = g.maxflow()
 
